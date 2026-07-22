@@ -1,0 +1,1460 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>70s Soul & Disco Prompt Generator</title>
+  <style>
+    :root{
+      --ink:#26120c;
+      --cream:#fff4dc;
+      --orange:#ff7a00;
+      --gold:#ffc928;
+      --pink:#f72585;
+      --magenta:#b5179e;
+      --purple:#7209b7;
+      --blue:#0096c7;
+      --teal:#00b4a6;
+      --green:#91c81f;
+      --red:#e63946;
+      --white:#fffdf8;
+      --shadow:0 16px 40px rgba(61,20,4,.22);
+      --radius:22px;
+    }
+
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{
+      margin:0;
+      min-height:100vh;
+      color:var(--ink);
+      font-family:Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background:
+        radial-gradient(circle at 50% 0%, rgba(255,255,255,.7), transparent 34%),
+        repeating-conic-gradient(
+          from -8deg at 50% 16%,
+          #ffcb21 0 8deg,
+          #f72585 8deg 16deg,
+          #00a8c6 16deg 24deg,
+          #ff7a00 24deg 32deg,
+          #86c232 32deg 40deg,
+          #7b2cbf 40deg 48deg
+        );
+      background-attachment:fixed;
+    }
+
+    body::before{
+      content:"";
+      position:fixed;
+      inset:0;
+      pointer-events:none;
+      background:
+        radial-gradient(circle, rgba(255,255,255,.25) 0 2px, transparent 3px) 0 0/34px 34px,
+        linear-gradient(rgba(255,255,255,.08),rgba(255,255,255,.08));
+      mix-blend-mode:overlay;
+    }
+
+    button,input,select,textarea{font:inherit}
+
+    .app{
+      width:min(1180px, calc(100% - 28px));
+      margin:28px auto 60px;
+      position:relative;
+      z-index:1;
+    }
+
+    .hero{
+      position:relative;
+      overflow:hidden;
+      padding:34px 26px 30px;
+      border:5px solid var(--ink);
+      border-radius:30px;
+      background:linear-gradient(135deg,#fff6db 0%,#ffd856 42%,#ff9f1c 100%);
+      box-shadow:var(--shadow);
+      text-align:center;
+    }
+
+    .hero::before,.hero::after{
+      content:"";
+      position:absolute;
+      width:160px;
+      height:160px;
+      border-radius:50%;
+      border:22px solid rgba(247,37,133,.35);
+      top:-58px;
+    }
+    .hero::before{left:-55px}
+    .hero::after{right:-55px;border-color:rgba(0,150,199,.35)}
+
+    .kicker{
+      display:inline-block;
+      padding:7px 13px;
+      border:3px solid var(--ink);
+      border-radius:999px;
+      background:var(--white);
+      font-weight:900;
+      letter-spacing:.12em;
+      text-transform:uppercase;
+      font-size:.75rem;
+      transform:rotate(-2deg);
+    }
+
+    h1{
+      margin:14px 0 6px;
+      font-family:Georgia, "Times New Roman", serif;
+      font-size:clamp(2.5rem,7vw,5.8rem);
+      line-height:.86;
+      letter-spacing:-.06em;
+      text-transform:uppercase;
+      color:#fff8dd;
+      -webkit-text-stroke:3px var(--ink);
+      text-shadow:
+        0 5px 0 #f72585,
+        0 9px 0 #0096c7,
+        0 13px 0 #ff7a00;
+    }
+
+    .subtitle{
+      margin:16px auto 0;
+      max-width:760px;
+      font-weight:800;
+      font-size:clamp(.95rem,2vw,1.12rem);
+      line-height:1.5;
+    }
+
+    .preset-strip{
+      display:grid;
+      grid-template-columns:repeat(5,minmax(0,1fr));
+      gap:12px;
+      margin:18px 0;
+    }
+
+    .preset{
+      border:4px solid var(--ink);
+      border-radius:18px;
+      padding:14px 10px;
+      font-weight:950;
+      cursor:pointer;
+      box-shadow:0 7px 0 var(--ink);
+      transition:.16s ease;
+      color:var(--ink);
+    }
+    .preset:nth-child(1){background:#ffcb21}
+    .preset:nth-child(2){background:#f72585;color:white}
+    .preset:nth-child(3){background:#00b4a6}
+    .preset:nth-child(4){background:#8ac926}
+    .preset:nth-child(5){background:#9b5de5;color:white}
+    .preset:hover{transform:translateY(-2px)}
+    .preset:active{transform:translateY(5px);box-shadow:0 2px 0 var(--ink)}
+
+    .panel{
+      background:rgba(255,248,226,.96);
+      border:5px solid var(--ink);
+      border-radius:var(--radius);
+      box-shadow:var(--shadow);
+      margin-top:18px;
+      overflow:hidden;
+    }
+
+    .panel-heading{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:14px;
+      padding:17px 20px;
+      border-bottom:4px solid var(--ink);
+      background:linear-gradient(90deg,#ffcb21,#ff7a00,#f72585);
+    }
+
+    .panel-heading h2{
+      margin:0;
+      font-family:Georgia, "Times New Roman", serif;
+      text-transform:uppercase;
+      font-size:1.35rem;
+      letter-spacing:.02em;
+    }
+
+    .panel-heading span{
+      font-weight:900;
+      font-size:.78rem;
+      background:white;
+      border:2px solid var(--ink);
+      border-radius:999px;
+      padding:5px 9px;
+    }
+
+    .grid{
+      display:grid;
+      grid-template-columns:repeat(2,minmax(0,1fr));
+      gap:16px;
+      padding:18px;
+    }
+
+    .field{
+      background:#fffdf7;
+      border:3px solid var(--ink);
+      border-radius:18px;
+      padding:15px;
+    }
+    .field.full{grid-column:1/-1}
+    .field h3{
+      margin:0 0 11px;
+      font-size:.95rem;
+      text-transform:uppercase;
+      letter-spacing:.05em;
+    }
+    .helper{
+      margin:-3px 0 10px;
+      font-size:.78rem;
+      font-weight:700;
+      opacity:.68;
+    }
+
+    .chips{
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+    }
+    .chip input{
+      position:absolute;
+      opacity:0;
+      pointer-events:none;
+    }
+    .chip span{
+      display:inline-block;
+      padding:8px 11px;
+      border:2px solid var(--ink);
+      border-radius:999px;
+      background:#fff6dd;
+      font-weight:850;
+      font-size:.83rem;
+      cursor:pointer;
+      transition:.14s ease;
+      user-select:none;
+    }
+    .chip span:hover{transform:translateY(-1px)}
+    .chip input:checked + span{
+      color:white;
+      background:linear-gradient(135deg,var(--purple),var(--pink));
+      box-shadow:0 4px 0 var(--ink);
+      transform:translateY(-2px);
+    }
+
+    select,input[type="text"],textarea,input[type="file"]{
+      width:100%;
+      border:3px solid var(--ink);
+      border-radius:13px;
+      background:#fffaf0;
+      padding:11px 12px;
+      outline:none;
+      font-weight:750;
+    }
+    select:focus,input:focus,textarea:focus{box-shadow:0 0 0 4px rgba(0,150,199,.2)}
+    textarea{min-height:92px;resize:vertical}
+
+    .upload-wrap{
+      display:grid;
+      grid-template-columns:1fr 130px;
+      gap:12px;
+      align-items:start;
+    }
+    .preview{
+      width:130px;
+      height:130px;
+      border:3px dashed var(--ink);
+      border-radius:16px;
+      background:#fff3ca;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      text-align:center;
+      font-weight:900;
+      font-size:.75rem;
+      overflow:hidden;
+    }
+    .preview img{width:100%;height:100%;object-fit:cover}
+
+    .actions{
+      position:sticky;
+      bottom:12px;
+      z-index:5;
+      display:grid;
+      grid-template-columns:repeat(4,minmax(0,1fr));
+      gap:10px;
+      margin-top:18px;
+      padding:12px;
+      border:4px solid var(--ink);
+      border-radius:20px;
+      background:rgba(255,244,220,.96);
+      box-shadow:var(--shadow);
+      backdrop-filter:blur(10px);
+    }
+
+    .action{
+      min-height:50px;
+      border:3px solid var(--ink);
+      border-radius:14px;
+      font-weight:950;
+      cursor:pointer;
+      box-shadow:0 5px 0 var(--ink);
+      transition:.15s ease;
+    }
+    .action:hover{transform:translateY(-2px)}
+    .action:active{transform:translateY(4px);box-shadow:0 1px 0 var(--ink)}
+    .random{background:#00b4a6}
+    .clear{background:#fff}
+    .generate{background:#ffcb21}
+    .copy{background:#f72585;color:white}
+
+    .output{
+      padding:18px;
+    }
+    #promptOutput{
+      min-height:250px;
+      line-height:1.6;
+      background:#20120d;
+      color:#fff7db;
+      border:4px solid #20120d;
+      border-radius:18px;
+      padding:18px;
+      font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+      white-space:pre-wrap;
+    }
+
+    .status{
+      min-height:24px;
+      margin:10px 2px 0;
+      font-weight:900;
+      text-align:right;
+    }
+
+
+    .mode-tabs{
+      display:grid;
+      grid-template-columns:repeat(2,minmax(0,1fr));
+      gap:10px;
+      margin:18px 0;
+      padding:10px;
+      border:4px solid var(--ink);
+      border-radius:20px;
+      background:rgba(255,244,220,.96);
+      box-shadow:var(--shadow);
+    }
+    .mode-tab{
+      border:3px solid var(--ink);
+      border-radius:14px;
+      padding:13px 16px;
+      font-weight:950;
+      cursor:pointer;
+      background:#fff;
+      box-shadow:0 5px 0 var(--ink);
+      transition:.15s ease;
+    }
+    .mode-tab.active{
+      background:linear-gradient(135deg,#ffcb21,#ff7a00);
+      transform:translateY(-2px);
+    }
+    .mode-panel[hidden]{display:none !important}
+    .coloring-note{
+      background:#fff;
+      border:3px solid var(--ink);
+      border-radius:16px;
+      padding:14px;
+      font-weight:800;
+      line-height:1.5;
+    }
+
+    @media (max-width:900px){
+      .preset-strip{grid-template-columns:repeat(2,minmax(0,1fr))}
+      .grid{grid-template-columns:1fr}
+      .field.full{grid-column:auto}
+      .actions{grid-template-columns:repeat(2,minmax(0,1fr));position:static}
+    }
+
+    @media (max-width:560px){
+      .app{width:min(100% - 16px,1180px);margin-top:8px}
+      .hero{padding:28px 14px 24px}
+      h1{-webkit-text-stroke:2px var(--ink)}
+      .preset-strip{grid-template-columns:1fr}
+      .grid{padding:10px}
+      .upload-wrap{grid-template-columns:1fr}
+      .preview{width:100%;height:190px}
+    }
+  </style>
+</head>
+<body>
+  <main class="app">
+    <header class="hero">
+      <div class="kicker">Original 70s-inspired creations</div>
+      <h1>Boogie & Soul<br>Prompt Generator</h1>
+      <p class="subtitle">Build bold disco, funk, soul, street-fashion, coloring-book, and vintage poster prompts without copying any existing artist, character, layout, logo, or protected artwork.</p>
+    </header>
+
+    <section class="preset-strip" aria-label="Presets">
+      <button class="preset" data-preset="boogie">Boogie Night</button>
+      <button class="preset" data-preset="soultrain">Soul Train Glam</button>
+      <button class="preset" data-preset="funkycity">Funky City</button>
+      <button class="preset" data-preset="soulstreet">Soul Street</button>
+      <button class="preset" data-preset="vintagefox">Vintage Fox</button>
+    </section>
+
+
+    <section class="mode-tabs" aria-label="Generator mode">
+      <button class="mode-tab active" type="button" data-mode="image">Image Prompts</button>
+      <button class="mode-tab" type="button" data-mode="coloring">Coloring Pages</button>
+    </section>
+
+    <section class="panel mode-panel" data-mode-panel="image">
+      <div class="panel-heading">
+        <h2>Character & Identity</h2>
+        <span>70s only</span>
+      </div>
+      <div class="grid">
+        <div class="field">
+          <h3>Character Source</h3>
+          <div class="chips" data-group="source">
+            <label class="chip"><input type="radio" name="source" value="Create an entirely original character with a believable identity" checked><span>Original character</span></label>
+            <label class="chip"><input type="radio" name="source" value="Use the uploaded reference photo as the identity reference and preserve recognizable facial features, skin tone, age, body proportions, and natural likeness"><span>Uploaded photo</span></label>
+          </div>
+        </div>
+
+        <div class="field">
+          <h3>Image Size</h3>
+          <div class="chips" data-group="size">
+            <label class="chip"><input type="radio" name="size" value="Square 1:1" checked><span>1:1 Square</span></label>
+            <label class="chip"><input type="radio" name="size" value="Portrait 4:5"><span>4:5 Portrait</span></label>
+            <label class="chip"><input type="radio" name="size" value="Vertical 9:16"><span>9:16 Vertical</span></label>
+          </div>
+        </div>
+
+        <div class="field full">
+          <h3>Reference Photo</h3>
+          <p class="helper">The image stays inside your browser. The generated prompt will instruct your image tool to use it as the identity reference.</p>
+          <div class="upload-wrap">
+            <div>
+              <input id="referenceUpload" type="file" accept="image/*">
+              <p id="fileName" class="helper">No photo selected.</p>
+            </div>
+            <div class="preview" id="preview">PHOTO PREVIEW</div>
+          </div>
+        </div>
+
+        <div class="field">
+          <h3>Gender</h3>
+          <div class="chips" data-group="gender">
+            <label class="chip"><input type="radio" name="gender" value="female" checked><span>Female</span></label>
+            <label class="chip"><input type="radio" name="gender" value="male"><span>Male</span></label>
+          </div>
+        </div>
+
+        <div class="field">
+          <h3>Ethnicity</h3>
+          <select id="ethnicity">
+            <option>Black / African American</option>
+            <option>African</option>
+            <option>Afro-Latina / Afro-Latino</option>
+            <option>Latina / Latino</option>
+            <option>Asian</option>
+            <option>South Asian</option>
+            <option>Middle Eastern</option>
+            <option>White</option>
+            <option>Mixed ethnicity</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <h3>Character Setup</h3>
+          <select id="setup">
+            <option>solo character</option>
+            <option>female duo</option>
+            <option>male duo</option>
+            <option>man and woman duo</option>
+            <option>female trio</option>
+            <option>male trio</option>
+            <option>mixed dance group</option>
+            <option>fashion ensemble</option>
+            <option>community street group</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <h3>Body Type</h3>
+          <select id="bodyType">
+            <option>full-figured and confident</option>
+            <option>curvy</option>
+            <option>athletic</option>
+            <option>slender</option>
+            <option>stocky</option>
+            <option>tall and statuesque</option>
+            <option>average build</option>
+          </select>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel mode-panel" data-mode-panel="image">
+      <div class="panel-heading">
+        <h2>Hair, Fashion & Shoes</h2>
+        <span>Mix and match</span>
+      </div>
+      <div class="grid">
+        <div class="field">
+          <h3>70s Hair</h3>
+          <select id="hair">
+            <optgroup label="Female 70s Hairstyles" data-gender-group="female">
+              <option data-gender="female">large perfectly rounded afro</option>
+              <option data-gender="female">oversized cloud afro</option>
+              <option data-gender="female">soft natural afro</option>
+              <option data-gender="female">afro with a colorful headband</option>
+              <option data-gender="female">two rounded afro puffs</option>
+              <option data-gender="female">long feathered layers</option>
+              <option data-gender="female">voluminous shag haircut</option>
+              <option data-gender="female">long natural curls</option>
+              <option data-gender="female">cornrows flowing into loose curls</option>
+              <option data-gender="female">short sculpted afro</option>
+              <option data-gender="female">braided updo without crowns or tiaras</option>
+            </optgroup>
+            <optgroup label="Male 70s Hairstyles" data-gender-group="male">
+              <option data-gender="male">rounded natural afro with clean sideburns</option>
+              <option data-gender="male">large sculpted afro</option>
+              <option data-gender="male">short natural afro</option>
+              <option data-gender="male">afro with pronounced sideburns</option>
+              <option data-gender="male">feathered collar-length hair</option>
+              <option data-gender="male">layered 1970s shag haircut</option>
+              <option data-gender="male">neat cornrows</option>
+              <option data-gender="male">short textured curls with sideburns</option>
+              <option data-gender="male">rounded afro with a mustache</option>
+              <option data-gender="male">close-cropped natural hair with a full mustache</option>
+            </optgroup>
+          </select>
+        </div>
+
+        <div class="field">
+          <h3>Hair Color</h3>
+          <select id="hairColor">
+            <option>natural black</option>
+            <option>deep espresso brown</option>
+            <option>warm chestnut brown</option>
+            <option>copper auburn</option>
+            <option>honey blonde</option>
+            <option>platinum blonde</option>
+            <option>black with copper highlights</option>
+            <option>rainbow-tinted ends</option>
+            <option>magenta and blue halo tint</option>
+          </select>
+        </div>
+
+        <div class="field full">
+          <h3>70s Outfit</h3>
+          <p class="helper">Choose one or several pieces.</p>
+          <div class="gender-options" data-for-gender="female">
+            <p class="helper"><strong>Female outfits</strong></p>
+            <div class="chips" data-group="outfit-female">
+              <label class="chip"><input type="checkbox" value="a dramatic feminine bell-bottom jumpsuit"><span>Bell-bottom jumpsuit</span></label>
+              <label class="chip"><input type="checkbox" value="a plunging halter-neck jumpsuit"><span>Halter jumpsuit</span></label>
+              <label class="chip"><input type="checkbox" value="a glossy fitted metallic disco catsuit"><span>Metallic catsuit</span></label>
+              <label class="chip"><input type="checkbox" value="high-waisted flared pants with a fitted crop top"><span>Crop top + flares</span></label>
+              <label class="chip"><input type="checkbox" value="a flowing psychedelic maxi dress"><span>Psychedelic maxi</span></label>
+              <label class="chip"><input type="checkbox" value="a denim vest with extreme feminine bell bottoms"><span>Denim + bell bottoms</span></label>
+              <label class="chip"><input type="checkbox" value="a rainbow-striped feminine disco ensemble"><span>Rainbow disco</span></label>
+              <label class="chip"><input type="checkbox" value="a coordinated feminine soul-stage performance look"><span>Soul stage look</span></label>
+              <label class="chip"><input type="checkbox" value="a bold vintage action-film jumpsuit tailored for a woman"><span>Action-film look</span></label>
+              <label class="chip"><input type="checkbox" value="a fitted patterned halter romper with wide legs"><span>Patterned romper</span></label>
+              <label class="chip"><input type="checkbox" value="a wrap blouse with high-waisted palazzo pants"><span>Wrap blouse + palazzos</span></label>
+              <label class="chip"><input type="checkbox" value="a fitted ribbed turtleneck with a suede mini skirt and opaque tights"><span>Turtleneck + mini</span></label>
+            </div>
+          </div>
+
+          <div class="gender-options" data-for-gender="male" hidden>
+            <p class="helper"><strong>Male outfits</strong></p>
+            <div class="chips" data-group="outfit-male">
+              <label class="chip"><input type="checkbox" value="a wide-collar patterned shirt with tailored bell-bottom trousers"><span>Patterned shirt + flares</span></label>
+              <label class="chip"><input type="checkbox" value="a fitted turtleneck with high-waisted masculine flared trousers"><span>Turtleneck + flares</span></label>
+              <label class="chip"><input type="checkbox" value="a suede fringe jacket over a fitted knit shirt and flared jeans"><span>Suede fringe look</span></label>
+              <label class="chip"><input type="checkbox" value="a black leather jacket with a ribbed turtleneck and straight-leg vintage jeans"><span>Leather + jeans</span></label>
+              <label class="chip"><input type="checkbox" value="a three-piece leisure suit with a wide-collar shirt"><span>Leisure suit</span></label>
+              <label class="chip"><input type="checkbox" value="a velvet blazer with a patterned shirt and tailored flared trousers"><span>Velvet blazer</span></label>
+              <label class="chip"><input type="checkbox" value="a denim vest over a fitted tee with masculine bell-bottom jeans"><span>Denim soul look</span></label>
+              <label class="chip"><input type="checkbox" value="a coordinated masculine soul-stage performance suit"><span>Soul stage suit</span></label>
+              <label class="chip"><input type="checkbox" value="a bold masculine vintage action-film outfit"><span>Action-film outfit</span></label>
+              <label class="chip"><input type="checkbox" value="a knit vest over a wide-collar dress shirt with flared slacks"><span>Knit vest + slacks</span></label>
+              <label class="chip"><input type="checkbox" value="a safari jacket with a fitted shirt and wide-leg trousers"><span>Safari jacket</span></label>
+              <label class="chip"><input type="checkbox" value="a satin disco shirt with tailored high-waisted flares"><span>Satin disco shirt</span></label>
+            </div>
+          </div>
+        </div>
+
+        <div class="field full">
+          <h3>70s Shoes</h3>
+          <div class="gender-options" data-for-gender="female">
+            <div class="chips" data-group="shoes-female">
+              <label class="chip"><input type="checkbox" value="towering platform heels"><span>Platform heels</span></label>
+              <label class="chip"><input type="checkbox" value="chunky feminine platform boots"><span>Platform boots</span></label>
+              <label class="chip"><input type="checkbox" value="tall go-go boots"><span>Go-go boots</span></label>
+              <label class="chip"><input type="checkbox" value="glossy patent leather pumps"><span>Patent pumps</span></label>
+              <label class="chip"><input type="checkbox" value="metallic disco sandals"><span>Disco sandals</span></label>
+              <label class="chip"><input type="checkbox" value="rainbow-striped platform heels"><span>Rainbow platforms</span></label>
+            </div>
+          </div>
+          <div class="gender-options" data-for-gender="male" hidden>
+            <div class="chips" data-group="shoes-male">
+              <label class="chip"><input type="checkbox" value="chunky masculine platform boots"><span>Platform boots</span></label>
+              <label class="chip"><input type="checkbox" value="platform loafers"><span>Platform loafers</span></label>
+              <label class="chip"><input type="checkbox" value="two-tone vintage dress shoes"><span>Two-tone shoes</span></label>
+              <label class="chip"><input type="checkbox" value="sleek leather ankle boots"><span>Ankle boots</span></label>
+              <label class="chip"><input type="checkbox" value="stacked-heel leather boots"><span>Stacked-heel boots</span></label>
+              <label class="chip"><input type="checkbox" value="polished square-toe dress shoes"><span>Square-toe shoes</span></label>
+            </div>
+          </div>
+        </div>
+
+        <div class="field full">
+          <h3>Accessories</h3>
+          <div class="gender-options" data-for-gender="female">
+            <div class="chips" data-group="accessories-female">
+              <label class="chip"><input type="checkbox" value="oversized gold hoop earrings"><span>Gold hoops</span></label>
+              <label class="chip"><input type="checkbox" value="layered bead necklaces"><span>Layered beads</span></label>
+              <label class="chip"><input type="checkbox" value="stacked bangles"><span>Stacked bangles</span></label>
+              <label class="chip"><input type="checkbox" value="tinted round sunglasses"><span>Round sunglasses</span></label>
+              <label class="chip"><input type="checkbox" value="a wide statement belt"><span>Wide belt</span></label>
+              <label class="chip"><input type="checkbox" value="a colorful fabric headband"><span>Headband</span></label>
+              <label class="chip"><input type="checkbox" value="a patterned neck scarf"><span>Neck scarf</span></label>
+              <label class="chip"><input type="checkbox" value="a compact vintage handbag"><span>Vintage handbag</span></label>
+              <label class="chip"><input type="checkbox" value="a large floral hair accent"><span>Floral hair accent</span></label>
+            </div>
+          </div>
+          <div class="gender-options" data-for-gender="male" hidden>
+            <div class="chips" data-group="accessories-male">
+              <label class="chip"><input type="checkbox" value="tinted aviator sunglasses"><span>Aviators</span></label>
+              <label class="chip"><input type="checkbox" value="a wide leather belt with a bold buckle"><span>Wide leather belt</span></label>
+              <label class="chip"><input type="checkbox" value="a patterned neck scarf tied at the collar"><span>Neck scarf</span></label>
+              <label class="chip"><input type="checkbox" value="a masculine brimmed fedora"><span>Fedora</span></label>
+              <label class="chip"><input type="checkbox" value="a newsboy cap"><span>Newsboy cap</span></label>
+              <label class="chip"><input type="checkbox" value="a slim gold chain worn under the shirt collar"><span>Gold chain</span></label>
+              <label class="chip"><input type="checkbox" value="a leather wristwatch"><span>Leather watch</span></label>
+              <label class="chip"><input type="checkbox" value="a wide-lapel pocket square"><span>Pocket square</span></label>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel mode-panel" data-mode-panel="image">
+      <div class="panel-heading">
+        <h2>Pose, Scene & Art Direction</h2>
+        <span>Highly detailed</span>
+      </div>
+      <div class="grid">
+        <div class="field">
+          <h3>Pose or Action</h3>
+          <select id="pose">
+            <option>mid-dance with bent knees and rhythmic hand gestures</option>
+            <option>performing in a Soul Train-inspired dance line</option>
+            <option>standing in a strong full-body power pose</option>
+            <option>leaning toward another dancer with playful competitive energy</option>
+            <option>holding a low dramatic fashion crouch</option>
+            <option>walking confidently toward the camera</option>
+            <option>posing with one hand on the hip</option>
+            <option>pointing upward in a classic disco dance move</option>
+            <option>posing beside a vintage luxury car</option>
+            <option>standing proudly in front of a retro train</option>
+            <option>marching together through a city street</option>
+            <option>lounging in an exaggerated editorial fashion pose</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <h3>Scene</h3>
+          <select id="scene">
+            <option>a glowing disco dance floor with a cheering crowd</option>
+            <option>a psychedelic rainbow sunburst poster background</option>
+            <option>a soul-stage television dance set</option>
+            <option>a colorful 1970s city street</option>
+            <option>a neon roller rink</option>
+            <option>a glamorous underground funk nightclub</option>
+            <option>a packed vintage record store</option>
+            <option>a dramatic vintage movie-poster collage</option>
+            <option>a warm wood-paneled 1970s living room</option>
+            <option>an outdoor funk and soul music festival</option>
+            <option>a retro train platform with oversized disco balls</option>
+            <option>a playful fashion coloring-book cover</option>
+            <option>a minimalist white movie-poster background with a city silhouette</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <h3>Art Treatment</h3>
+          <select id="artStyle">
+            <option>polished semi-realistic retro illustration</option>
+            <option>vintage comic-book poster art</option>
+            <option>1970s movie-poster collage</option>
+            <option>psychedelic painted poster illustration</option>
+            <option>glossy disco fantasy artwork</option>
+            <option>coloring-book cover illustration with clean inked contours</option>
+            <option>vintage print advertisement</option>
+            <option>high-fashion editorial illustration</option>
+            <option>screen-printed soul poster aesthetic</option>
+            <option>retro album-cover artwork</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <h3>Color Palette</h3>
+          <select id="palette">
+            <option>orange, avocado green, mustard yellow, and chocolate brown</option>
+            <option>hot pink, turquoise, sunshine yellow, and purple</option>
+            <option>red, burnt orange, cream, and deep brown</option>
+            <option>full rainbow disco colors</option>
+            <option>metallic blue, magenta, gold, and white</option>
+            <option>black, gold, red, and warm cream</option>
+            <option>denim blue, rust orange, mustard, and tan</option>
+            <option>lime green, tangerine, aqua, and fuchsia</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <h3>Lighting</h3>
+          <select id="lighting">
+            <option>bright high-energy studio lighting with glossy highlights</option>
+            <option>warm cinematic sunset lighting</option>
+            <option>colorful nightclub lighting with rim glow</option>
+            <option>dramatic spotlighting with sparkling reflections</option>
+            <option>soft vintage print lighting</option>
+            <option>clean white editorial lighting</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <h3>Composition</h3>
+          <select id="composition">
+            <option>full-body centered poster composition</option>
+            <option>dynamic low-angle fashion composition</option>
+            <option>symmetrical duo composition</option>
+            <option>layered ensemble composition</option>
+            <option>dramatic movie-poster collage composition</option>
+            <option>close editorial portrait with visible fashion details</option>
+            <option>wide dance-floor scene with strong depth</option>
+          </select>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel mode-panel" data-mode-panel="image">
+      <div class="panel-heading">
+        <h2>Typography & Message</h2>
+        <span>Optional</span>
+      </div>
+      <div class="grid">
+        <div class="field">
+          <h3>Typography Style</h3>
+          <select id="typography">
+            <option>groovy dimensional bubble lettering</option>
+            <option>curved psychedelic display lettering</option>
+            <option>bold vintage movie-poster typography</option>
+            <option>funky outlined disco lettering</option>
+            <option>retro serif title lettering</option>
+            <option>hand-drawn coloring-book cover typography</option>
+            <option>minimal condensed 1970s poster type</option>
+            <option>no typography</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <h3>Main Headline</h3>
+          <input id="headline" type="text" placeholder="Example: BOOGIE ALL NIGHT">
+        </div>
+
+        <div class="field">
+          <h3>Subtitle</h3>
+          <input id="subheadline" type="text" placeholder="Example: Soul, style, and good energy">
+        </div>
+
+        <div class="field">
+          <h3>Footer Text</h3>
+          <input id="footerText" type="text" placeholder="Example: Keep it funky">
+        </div>
+
+        <div class="field full">
+          <h3>Extra Details</h3>
+          <textarea id="extraDetails" placeholder="Add custom colors, props, facial expression, age range, background details, or anything else you want included."></textarea>
+        </div>
+      </div>
+    </section>
+
+
+    <section class="panel mode-panel" data-mode-panel="coloring" hidden>
+      <div class="panel-heading">
+        <h2>Coloring Page Builder</h2>
+        <span>US Letter 8.5 × 11</span>
+      </div>
+      <div class="grid">
+        <div class="field full">
+          <div class="coloring-note">
+            Creates clean black-and-white coloring-page prompts on a standard US Letter portrait page. No shading, no grayscale, no gradients, no shadows, no hatching, no cross-hatching, no halftones, and no solid black fill areas.
+          </div>
+        </div>
+
+        <div class="field">
+          <h3>Character Source</h3>
+          <div class="chips" data-group="color-source">
+            <label class="chip"><input type="radio" name="colorSource" value="Create an entirely original character with a believable identity" checked><span>Original character</span></label>
+            <label class="chip"><input type="radio" name="colorSource" value="Use the uploaded reference photo as the identity reference while preserving recognizable facial features, age, skin tone, body proportions, and natural likeness"><span>Uploaded photo</span></label>
+          </div>
+        </div>
+
+        <div class="field">
+          <h3>Page Layout</h3>
+          <select id="colorPageLayout">
+            <option>US Letter 8.5 x 11 inches, portrait orientation</option>
+            <option>US Letter 8.5 x 11 inches, landscape orientation</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <h3>Gender</h3>
+          <div class="chips">
+            <label class="chip"><input type="radio" name="colorGender" value="female" checked><span>Female</span></label>
+            <label class="chip"><input type="radio" name="colorGender" value="male"><span>Male</span></label>
+          </div>
+        </div>
+
+        <div class="field">
+          <h3>Ethnicity</h3>
+          <select id="colorEthnicity">
+            <option>Black / African American</option>
+            <option>African</option>
+            <option>Afro-Latina / Afro-Latino</option>
+            <option>Latina / Latino</option>
+            <option>Asian</option>
+            <option>South Asian</option>
+            <option>Middle Eastern</option>
+            <option>White</option>
+            <option>Mixed ethnicity</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <h3>Character Setup</h3>
+          <select id="colorSetup">
+            <option>solo character</option>
+            <option>female duo</option>
+            <option>male duo</option>
+            <option>man and woman duo</option>
+            <option>female trio</option>
+            <option>male trio</option>
+            <option>mixed dance group</option>
+            <option>fashion ensemble</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <h3>Line Style</h3>
+          <select id="colorLineStyle">
+            <option>clean bold outer contours with medium interior detail lines</option>
+            <option>thick beginner-friendly outlines with large open coloring spaces</option>
+            <option>crisp detailed adult-coloring-book line art</option>
+            <option>smooth vintage comic-style ink outlines</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <h3>70s Hair</h3>
+          <select id="colorHair">
+            <option data-gender="female">large perfectly rounded afro</option>
+            <option data-gender="female">oversized cloud afro</option>
+            <option data-gender="female">soft natural afro</option>
+            <option data-gender="female">afro with a fabric headband</option>
+            <option data-gender="female">long feathered layers</option>
+            <option data-gender="female">voluminous shag haircut</option>
+            <option data-gender="female">long natural curls</option>
+            <option data-gender="female">short sculpted afro</option>
+            <option data-gender="male">rounded natural afro with clean sideburns</option>
+            <option data-gender="male">large sculpted afro</option>
+            <option data-gender="male">short natural afro</option>
+            <option data-gender="male">feathered collar-length hair</option>
+            <option data-gender="male">layered 1970s shag haircut</option>
+            <option data-gender="male">neat cornrows</option>
+            <option data-gender="male">rounded afro with a mustache</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <h3>70s Outfit</h3>
+          <select id="colorOutfit">
+            <option data-gender="female">high-waisted bell-bottom pants with a fitted crop top</option>
+            <option data-gender="female">a feminine bell-bottom jumpsuit</option>
+            <option data-gender="female">a flowing psychedelic maxi dress</option>
+            <option data-gender="female">a fitted disco catsuit</option>
+            <option data-gender="female">a wrap blouse with high-waisted palazzo pants</option>
+            <option data-gender="male">a wide-collar patterned shirt with tailored bell-bottom trousers</option>
+            <option data-gender="male">a three-piece leisure suit with a wide-collar shirt</option>
+            <option data-gender="male">a suede fringe jacket with flared jeans</option>
+            <option data-gender="male">a velvet blazer with tailored flared trousers</option>
+            <option data-gender="male">a satin disco shirt with high-waisted flares</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <h3>Pose</h3>
+          <select id="colorPose">
+            <option>dancing in a lively 1970s pose</option>
+            <option>standing in a confident full-body fashion pose</option>
+            <option>performing in a soul-dance line</option>
+            <option>walking toward the viewer with swagger</option>
+            <option>posing beside a vintage car</option>
+            <option>holding a low dramatic fashion crouch</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <h3>Background Detail</h3>
+          <select id="colorBackground">
+            <option>simple disco floor with a few large decorative stars</option>
+            <option>retro dance stage with large open background shapes</option>
+            <option>1970s living room with simplified furniture</option>
+            <option>vintage city street with clean architectural outlines</option>
+            <option>roller rink with large easy-to-color details</option>
+            <option>minimal background with a bold psychedelic sunburst</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <h3>Complexity</h3>
+          <select id="colorComplexity">
+            <option>medium detail with large clear coloring areas</option>
+            <option>simple beginner-friendly detail</option>
+            <option>high detail for adult coloring</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <h3>Border</h3>
+          <select id="colorBorder">
+            <option>clean white margin with no decorative border</option>
+            <option>thin black rectangular page border</option>
+            <option>rounded retro frame with large open shapes</option>
+          </select>
+        </div>
+
+        <div class="field full">
+          <h3>Custom Coloring Page Details</h3>
+          <textarea id="colorExtra" placeholder="Add a custom scene, prop, outfit detail, expression, or coloring-page theme."></textarea>
+        </div>
+      </div>
+    </section>
+
+    <div class="actions">
+      <button class="action random" id="randomizeBtn">🎲 Randomize</button>
+      <button class="action clear" id="clearBtn">Clear All</button>
+      <button class="action generate" id="generateBtn">Generate Prompt</button>
+      <button class="action copy" id="copyBtn">Copy Prompt</button>
+    </div>
+
+    <section class="panel">
+      <div class="panel-heading">
+        <h2>Generated Prompt</h2>
+        <span>Ready to copy</span>
+      </div>
+      <div class="output">
+        <div id="promptOutput">Choose your options, then select “Generate Prompt.”</div>
+        <div class="status" id="status"></div>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const $ = (selector) => document.querySelector(selector);
+    const $$ = (selector) => [...document.querySelectorAll(selector)];
+
+    let currentMode = "image";
+
+    const presets = {
+      boogie: {
+        gender:"female",
+        ethnicity:"Black / African American",
+        setup:"female duo",
+        bodyType:"curvy",
+        hair:"large perfectly rounded afro",
+        hairColor:"natural black",
+        outfitFemale:["a dramatic bell-bottom jumpsuit","a glossy metallic disco catsuit"],
+        shoesFemale:["towering platform heels"],
+        accessoriesFemale:["oversized gold hoop earrings","stacked bangles"],
+        pose:"leaning toward another dancer with playful competitive energy",
+        scene:"a psychedelic rainbow sunburst poster background",
+        artStyle:"psychedelic painted poster illustration",
+        palette:"hot pink, turquoise, sunshine yellow, and purple",
+        lighting:"bright high-energy studio lighting with glossy highlights",
+        composition:"symmetrical duo composition",
+        typography:"groovy dimensional bubble lettering",
+        headline:"70'S BOOGIE NIGHTS",
+        subheadline:"",
+        footerText:""
+      },
+      soultrain: {
+        gender:"female",
+        ethnicity:"Black / African American",
+        setup:"female trio",
+        bodyType:"curvy",
+        hair:"oversized cloud afro",
+        hairColor:"natural black",
+        outfitFemale:["high-waisted flared pants with a fitted crop top","a rainbow-striped disco ensemble"],
+        shoesFemale:["towering platform heels","rainbow-striped platform shoes"],
+        accessoriesFemale:["oversized gold hoop earrings","layered bead necklaces","stacked bangles","a colorful fabric headband"],
+        pose:"performing in a Soul Train-inspired dance line",
+        scene:"a glowing disco dance floor with a cheering crowd",
+        artStyle:"glossy disco fantasy artwork",
+        palette:"full rainbow disco colors",
+        lighting:"colorful nightclub lighting with rim glow",
+        composition:"layered ensemble composition",
+        typography:"funky outlined disco lettering",
+        headline:"SOUL TRAIN GLAM",
+        subheadline:"Dance. Shine. Repeat.",
+        footerText:""
+      },
+      funkycity: {
+        gender:"female",
+        ethnicity:"Black / African American",
+        setup:"solo character",
+        bodyType:"tall and statuesque",
+        hair:"oversized cloud afro",
+        hairColor:"natural black",
+        outfitFemale:["a rainbow-striped disco ensemble"],
+        shoesFemale:["rainbow-striped platform shoes"],
+        accessoriesFemale:["tinted round sunglasses","oversized gold hoop earrings","a wide statement belt"],
+        pose:"standing proudly in front of a retro train",
+        scene:"a retro train platform with oversized disco balls",
+        artStyle:"retro album-cover artwork",
+        palette:"metallic blue, magenta, gold, and white",
+        lighting:"dramatic spotlighting with sparkling reflections",
+        composition:"full-body centered poster composition",
+        typography:"bold vintage movie-poster typography",
+        headline:"FUNKY CITY",
+        subheadline:"All aboard the soul express",
+        footerText:""
+      },
+      soulstreet: {
+        gender:"female",
+        ethnicity:"Black / African American",
+        setup:"community street group",
+        bodyType:"average build",
+        hair:"short sculpted afro",
+        hairColor:"natural black",
+        outfitFemale:["a black leather jacket with straight-leg vintage jeans","a fitted turtleneck with high-waisted denim"],
+        shoesFemale:["sleek leather ankle boots","platform loafers"],
+        accessoriesFemale:["a vintage beret","a wide statement belt"],
+        pose:"marching together through a city street",
+        scene:"a colorful 1970s city street",
+        artStyle:"coloring-book cover illustration with clean inked contours",
+        palette:"denim blue, rust orange, mustard, and tan",
+        lighting:"soft vintage print lighting",
+        composition:"layered ensemble composition",
+        typography:"retro serif title lettering",
+        headline:"SOUL & STYLE",
+        subheadline:"1970s fashion and expression",
+        footerText:""
+      },
+      vintagefox: {
+        gender:"female",
+        ethnicity:"Black / African American",
+        setup:"solo character",
+        bodyType:"athletic",
+        hair:"soft natural afro",
+        hairColor:"natural black",
+        outfitFemale:["a bold vintage action-film jumpsuit"],
+        shoesFemale:["chunky platform boots"],
+        accessoriesFemale:["oversized gold hoop earrings","stacked bangles"],
+        pose:"posing beside a vintage luxury car",
+        scene:"a minimalist white movie-poster background with a city silhouette",
+        artStyle:"1970s movie-poster collage",
+        palette:"red, burnt orange, cream, and deep brown",
+        lighting:"clean white editorial lighting",
+        composition:"dramatic movie-poster collage composition",
+        typography:"bold vintage movie-poster typography",
+        headline:"SILKY FIRE",
+        subheadline:"She's one smooth operator",
+        footerText:"An original 70s-inspired action poster"
+      }
+    };
+
+    function setRadio(name, value){
+      const input = $$(`input[name="${name}"]`).find(el => el.value === value);
+      if(input) input.checked = true;
+    }
+
+    function setSelect(id, value){
+      const el = document.getElementById(id);
+      if([...el.options].some(o => o.value === value)) el.value = value;
+    }
+
+    function setChecks(group, values=[]){
+      $$(`[data-group="${group}"] input[type="checkbox"]`).forEach(el => {
+        el.checked = values.includes(el.value);
+      });
+    }
+
+    function selectedRadio(name){
+      return $(`input[name="${name}"]:checked`)?.value || "";
+    }
+
+    function selectedChecks(group){
+      return $$(`[data-group="${group}"] input[type="checkbox"]:checked`).map(el => el.value);
+    }
+
+    function joinNatural(items){
+      if(!items.length) return "";
+      if(items.length === 1) return items[0];
+      if(items.length === 2) return `${items[0]} and ${items[1]}`;
+      return `${items.slice(0,-1).join(", ")}, and ${items.at(-1)}`;
+    }
+
+    function clearOppositeGenderSelections(gender){
+      const opposite = gender === "female" ? "male" : "female";
+      ["outfit","shoes","accessories"].forEach(type => setChecks(`${type}-${opposite}`, []));
+    }
+
+    function updateGenderUI(){
+      const gender = selectedRadio("gender") || "female";
+
+      $$("[data-for-gender]").forEach(section => {
+        section.hidden = section.dataset.forGender !== gender;
+      });
+
+      const hairSelect = $("#hair");
+      [...hairSelect.options].forEach(option => {
+        option.hidden = option.dataset.gender !== gender;
+        option.disabled = option.dataset.gender !== gender;
+      });
+
+      const currentHair = hairSelect.options[hairSelect.selectedIndex];
+      if(!currentHair || currentHair.dataset.gender !== gender){
+        const firstValid = [...hairSelect.options].find(option => option.dataset.gender === gender);
+        if(firstValid) hairSelect.value = firstValid.value;
+      }
+
+      clearOppositeGenderSelections(gender);
+    }
+
+
+    function setMode(mode){
+      currentMode = mode;
+      $$(".mode-tab").forEach(btn => btn.classList.toggle("active", btn.dataset.mode === mode));
+      $$("[data-mode-panel]").forEach(panel => {
+        panel.hidden = panel.dataset.modePanel !== mode;
+      });
+      $("#status").textContent = mode === "coloring" ? "Coloring-page mode selected." : "Image-prompt mode selected.";
+      if(mode === "coloring") generateColoringPrompt();
+      else generatePrompt();
+    }
+
+    function updateColorGenderOptions(){
+      const gender = $('input[name="colorGender"]:checked')?.value || "female";
+      ["colorHair","colorOutfit"].forEach(id => {
+        const select = document.getElementById(id);
+        [...select.options].forEach(opt => {
+          const match = opt.dataset.gender === gender;
+          opt.hidden = !match;
+          opt.disabled = !match;
+        });
+        const selected = select.options[select.selectedIndex];
+        if(!selected || selected.dataset.gender !== gender){
+          const first = [...select.options].find(opt => opt.dataset.gender === gender);
+          if(first) select.value = first.value;
+        }
+      });
+    }
+
+    function randomizeColoring(){
+      randomRadio("colorGender");
+      updateColorGenderOptions();
+      ["colorEthnicity","colorSetup","colorLineStyle","colorHair","colorOutfit","colorPose","colorBackground","colorComplexity","colorBorder"].forEach(randomOption);
+      $("#colorExtra").value = "";
+      generateColoringPrompt();
+      $("#status").textContent = "Coloring page randomized.";
+    }
+
+    function clearColoring(){
+      setRadio("colorSource","Create an entirely original character with a believable identity");
+      setRadio("colorGender","female");
+      ["colorPageLayout","colorEthnicity","colorSetup","colorLineStyle","colorHair","colorOutfit","colorPose","colorBackground","colorComplexity","colorBorder"].forEach(id => {
+        document.getElementById(id).selectedIndex = 0;
+      });
+      $("#colorExtra").value = "";
+      updateColorGenderOptions();
+      $("#promptOutput").textContent = "Choose your coloring-page options, then select “Generate Prompt.”";
+      $("#status").textContent = "Coloring-page fields cleared.";
+    }
+
+    function generateColoringPrompt(){
+      updateColorGenderOptions();
+      const source = selectedRadio("colorSource");
+      const gender = $('input[name="colorGender"]:checked')?.value || "female";
+      const ethnicity = $("#colorEthnicity").value;
+      const setup = $("#colorSetup").value;
+      const pageLayout = $("#colorPageLayout").value;
+      const lineStyle = $("#colorLineStyle").value;
+      const hair = $("#colorHair").value;
+      const outfit = $("#colorOutfit").value;
+      const pose = $("#colorPose").value;
+      const background = $("#colorBackground").value;
+      const complexity = $("#colorComplexity").value;
+      const border = $("#colorBorder").value;
+      const extra = $("#colorExtra").value.trim();
+      const fileSelected = $("#referenceUpload").files.length > 0;
+
+      const sourceText = source.startsWith("Use the uploaded")
+        ? `${source}. ${fileSelected ? "A reference image has been selected." : "The user will provide the reference image when generating."} Do not alter the person's identity, age, face, or body type.`
+        : `${source}. Do not imitate a celebrity, known character, mascot, existing coloring-book character, movie character, or copyrighted artwork.`;
+
+      const genderRule = gender === "male"
+        ? "Use masculine styling only. Do not add makeup, lipstick, lashes, hoop earrings, feminine jewelry, dresses, skirts, crop tops, feminine heels, handbags, long styled wigs, lace fronts, buss-down hairstyles, or women-only beauty details."
+        : "Use feminine styling only. Do not add mustaches, beards, masculine facial hair, or male-only grooming details.";
+
+      const prompt = `Create a printable black-and-white 1970s-inspired coloring page.
+
+PAGE FORMAT:
+${pageLayout}. Center the artwork safely inside the printable area with a clean white margin. Use ${border}. Do not crop the head, afro, hands, feet, platform shoes, bell bottoms, or important props.
+
+CHARACTER SOURCE:
+${sourceText}
+
+CHARACTER:
+Feature a ${ethnicity} ${gender} in a ${setup}. Style the hair as ${hair}. Dress the character in ${outfit}. Show the character ${pose}. Keep the anatomy believable, the pose readable, and the fashion authentically inspired by 1970s disco, funk, soul, and street style.
+
+STRICT GENDER STYLING:
+${genderRule} Never mix male and female wardrobes, hairstyles, footwear, accessories, grooming, or beauty styling.
+
+COLORING-PAGE LINE ART:
+Use ${lineStyle}. Create pure black ink outlines on a completely white background. Use smooth, closed, crisp contour lines and ${complexity}. Keep large open spaces that are easy to color.
+
+ABSOLUTE NO-SHADING RULE:
+No shadows. No cast shadows. No black shadowing. No grayscale. No gray tones. No gradients. No shading. No hatching. No cross-hatching. No stippling. No halftones. No charcoal texture. No pencil texture. No painted texture. No solid black fill areas. No heavy black backgrounds. Do not fill the hair, clothing, skin, shoes, furniture, floor, or background with solid black. Define texture only with clean, minimal contour lines and open white spaces.
+
+BACKGROUND:
+Use ${background}. Keep the background clean and printable, with clear separated shapes and no visual clutter.
+
+PRINT QUALITY:
+Create high-resolution, clean vector-like line art suitable for a professional coloring book. Use consistent line weight, sharp edges, white page background, no color, no watermark, no logo, no page number, and no random text.${extra ? `\n\nCUSTOM DETAILS:\n${extra}` : ""}`;
+
+      $("#promptOutput").textContent = prompt;
+      $("#status").textContent = "Coloring-page prompt generated.";
+      return prompt;
+    }
+
+    function loadPreset(key){
+      clearSelections(false);
+      const p = presets[key];
+      setRadio("gender", p.gender);
+      setSelect("ethnicity", p.ethnicity);
+      setSelect("setup", p.setup);
+      setSelect("bodyType", p.bodyType);
+      setSelect("hair", p.hair);
+      setSelect("hairColor", p.hairColor);
+      setChecks("outfit-female", p.outfitFemale || []); setChecks("outfit-male", p.outfitMale || []);
+      setChecks("shoes-female", p.shoesFemale || []); setChecks("shoes-male", p.shoesMale || []);
+      setChecks("accessories-female", p.accessoriesFemale || []); setChecks("accessories-male", p.accessoriesMale || []);
+      setSelect("pose", p.pose);
+      setSelect("scene", p.scene);
+      setSelect("artStyle", p.artStyle);
+      setSelect("palette", p.palette);
+      setSelect("lighting", p.lighting);
+      setSelect("composition", p.composition);
+      setSelect("typography", p.typography);
+      $("#headline").value = p.headline;
+      $("#subheadline").value = p.subheadline;
+      $("#footerText").value = p.footerText;
+      updateGenderUI();
+      $("#status").textContent = "Preset loaded.";
+      generatePrompt();
+    }
+
+    function randomOption(id){
+      const el = document.getElementById(id);
+      el.selectedIndex = Math.floor(Math.random() * el.options.length);
+    }
+
+    function randomRadio(name){
+      const options = $$(`input[name="${name}"]`);
+      options[Math.floor(Math.random()*options.length)].checked = true;
+    }
+
+    function randomChecks(group, min=1, max=2){
+      const options = $$(`[data-group="${group}"] input[type="checkbox"]`);
+      options.forEach(el => el.checked = false);
+      const shuffled = [...options].sort(() => Math.random() - .5);
+      const count = Math.min(options.length, min + Math.floor(Math.random()*(max-min+1)));
+      shuffled.slice(0,count).forEach(el => el.checked = true);
+    }
+
+    function randomize(){
+      randomRadio("gender");
+      ["ethnicity","setup","bodyType","hair","hairColor","pose","scene","artStyle","palette","lighting","composition","typography"].forEach(randomOption);
+      const gender = selectedRadio("gender");
+      randomChecks(`outfit-${gender}`,1,2);
+      randomChecks(`shoes-${gender}`,1,2);
+      randomChecks(`accessories-${gender}`,0,2);
+      clearOppositeGenderSelections(gender);
+      updateGenderUI();
+      $("#headline").value = "";
+      $("#subheadline").value = "";
+      $("#footerText").value = "";
+      $("#extraDetails").value = "";
+      $("#status").textContent = "Randomized.";
+      generatePrompt();
+    }
+
+    function clearSelections(showStatus=true){
+      setRadio("source","Create an entirely original character with a believable identity");
+      setRadio("size","Square 1:1");
+      setRadio("gender","female");
+      ["ethnicity","setup","bodyType","hair","hairColor","pose","scene","artStyle","palette","lighting","composition","typography"].forEach(id => {
+        document.getElementById(id).selectedIndex = 0;
+      });
+      ["outfit-female","outfit-male","shoes-female","shoes-male","accessories-female","accessories-male"].forEach(group => setChecks(group,[]));
+      updateGenderUI();
+      ["headline","subheadline","footerText","extraDetails"].forEach(id => document.getElementById(id).value = "");
+      $("#referenceUpload").value = "";
+      $("#fileName").textContent = "No photo selected.";
+      $("#preview").innerHTML = "PHOTO PREVIEW";
+      $("#promptOutput").textContent = "Choose your options, then select “Generate Prompt.”";
+      if(showStatus) $("#status").textContent = "Cleared.";
+    }
+
+    function generatePrompt(){
+      const source = selectedRadio("source");
+      const size = selectedRadio("size");
+      const gender = selectedRadio("gender");
+      const ethnicity = $("#ethnicity").value;
+      const setup = $("#setup").value;
+      const bodyType = $("#bodyType").value;
+      const hair = $("#hair").value;
+      const hairColor = $("#hairColor").value;
+      const outfits = selectedChecks(`outfit-${gender}`);
+      const shoes = selectedChecks(`shoes-${gender}`);
+      const accessories = selectedChecks(`accessories-${gender}`);
+      const pose = $("#pose").value;
+      const scene = $("#scene").value;
+      const artStyle = $("#artStyle").value;
+      const palette = $("#palette").value;
+      const lighting = $("#lighting").value;
+      const composition = $("#composition").value;
+      const typography = $("#typography").value;
+      const headline = $("#headline").value.trim();
+      const subheadline = $("#subheadline").value.trim();
+      const footerText = $("#footerText").value.trim();
+      const extra = $("#extraDetails").value.trim();
+      const fileSelected = $("#referenceUpload").files.length > 0;
+
+      const outfitText = outfits.length ? joinNatural(outfits) : (gender === "male"
+        ? "an original, fully coordinated masculine 1970s outfit with period-correct tailoring"
+        : "an original, fully coordinated feminine 1970s outfit with period-correct silhouettes");
+      const shoeText = shoes.length ? joinNatural(shoes) : "period-correct 1970s footwear";
+      const accessoryText = accessories.length ? `Accessorize with ${joinNatural(accessories)}.` : "";
+
+      let textBlock = "Do not add visible text.";
+      if(typography !== "no typography" && (headline || subheadline || footerText)){
+        textBlock = `TYPOGRAPHY AND MESSAGE:\nUse ${typography}.`;
+        if(headline) textBlock += `\nMain headline: "${headline}"`;
+        if(subheadline) textBlock += `\nSubtitle: "${subheadline}"`;
+        if(footerText) textBlock += `\nFooter text: "${footerText}"`;
+        textBlock += "\nKeep all lettering readable, correctly spelled, intentionally placed, and naturally integrated into the composition.";
+      } else if(typography !== "no typography"){
+        textBlock = `TYPOGRAPHY:\nReserve clean space for optional ${typography}, but do not add random words or filler text.`;
+      }
+
+      const referenceNote = selectedRadio("source").startsWith("Use the uploaded")
+        ? `${source}. ${fileSelected ? "A reference photo has been selected." : "The user will provide a reference photo when generating the image."} Do not slim, reshape, de-age, or change the person's identity or body type.`
+        : `${source}. Do not imitate a celebrity, known character, mascot, existing coloring-book character, movie character, or copyrighted artwork.`;
+
+      const prompt = `Create an original ${size} 1970s-inspired image.
+
+CHARACTER SOURCE:
+${referenceNote}
+
+CHARACTER:
+Feature a ${ethnicity} ${gender} in a ${setup}, with a ${bodyType} body type. Style the hair as ${hair} in ${hairColor}. Keep the character expressive, polished, anatomically believable, and consistent throughout the scene.
+
+STRICT GENDER STYLING RULE:
+${gender === "male"
+  ? "Use masculine styling only. Do not give any male character feminine clothing, crop tops, halter tops, dresses, skirts, feminine heels, pumps, hoop earrings, floral hair accessories, feminine handbags, makeup, lipstick, lashes, long styled wigs, lace fronts, buss-down hairstyles, or other women-only fashion or beauty details. Male characters may have period-correct facial hair, sideburns, masculine jewelry, hats, watches, belts, shirts, jackets, suits, trousers, loafers, or boots."
+  : "Use feminine styling only. Do not give any female character masculine facial hair, mustaches, beards, masculine suits unless specifically selected, or male-only grooming details. Keep all selected hair, clothing, shoes, accessories, and beauty styling clearly feminine."}
+Never mix male and female wardrobe, footwear, hairstyle, accessory, grooming, or beauty selections.
+
+FASHION:
+Dress the character in ${outfitText}, paired with ${shoeText}. ${accessoryText} Every garment, shoe, hairstyle, textile pattern, and accessory must feel authentically inspired by 1970s disco, funk, soul, street fashion, or vintage editorial design.
+
+POSE AND ACTION:
+Show the character ${pose}. Keep the pose dynamic, balanced, readable, and naturally integrated into the environment.
+
+SCENE:
+Place the character in ${scene}. Build a richly detailed environment with believable scale, layered depth, strong visual storytelling, and period-inspired decorative details.
+
+ART DIRECTION:
+Use ${artStyle}. Apply a ${palette} color palette with ${lighting}. Use a ${composition}. Capture the broad visual language of premium 1970s-inspired poster art: expressive fashion, bold silhouettes, rich print texture, rhythmic shapes, confident posing, dramatic color contrast, and polished editorial storytelling.
+
+${textBlock}
+
+QUALITY AND ORIGINALITY:
+Make the image highly detailed, professional, cohesive, and visually striking. Keep faces, hands, feet, clothing construction, platforms, bell bottoms, body proportions, and group placement anatomically believable. Create a completely original character, composition, title arrangement, environment, prop design, and visual identity. Do not copy any artist's signature style, exact artwork, coloring-book cover, album cover, movie poster, logo, trademark, watermark, protected character, or recognizable layout.${extra ? `\n\nCUSTOM DETAILS:\n${extra}` : ""}`;
+
+      $("#promptOutput").textContent = prompt;
+      $("#status").textContent = "Prompt generated.";
+      return prompt;
+    }
+
+    async function copyPrompt(){
+      const prompt = $("#promptOutput").textContent;
+      if(prompt.startsWith("Choose your options") || prompt.startsWith("Choose your coloring-page options")){
+        currentMode === "coloring" ? generateColoringPrompt() : generatePrompt();
+      }
+      try{
+        await navigator.clipboard.writeText($("#promptOutput").textContent);
+        $("#status").textContent = "Prompt copied.";
+      }catch{
+        const range = document.createRange();
+        range.selectNodeContents($("#promptOutput"));
+        const selection = window.getSelection();
+        selection.removeAllRanges();
+        selection.addRange(range);
+        document.execCommand("copy");
+        selection.removeAllRanges();
+        $("#status").textContent = "Prompt copied.";
+      }
+    }
+
+    $$(".mode-tab").forEach(btn => btn.addEventListener("click", () => setMode(btn.dataset.mode)));
+    $$('input[name="colorGender"]').forEach(input => input.addEventListener("change", () => {
+      updateColorGenderOptions();
+      generateColoringPrompt();
+    }));
+    $$('input[name="gender"]').forEach(input => input.addEventListener("change", () => {
+      updateGenderUI();
+      generatePrompt();
+    }));
+    $$(".preset").forEach(btn => btn.addEventListener("click", () => loadPreset(btn.dataset.preset)));
+    $("#randomizeBtn").addEventListener("click", () => currentMode === "coloring" ? randomizeColoring() : randomize());
+    $("#clearBtn").addEventListener("click", () => currentMode === "coloring" ? clearColoring() : clearSelections(true));
+    $("#generateBtn").addEventListener("click", () => currentMode === "coloring" ? generateColoringPrompt() : generatePrompt());
+    $("#copyBtn").addEventListener("click", copyPrompt);
+
+    $("#referenceUpload").addEventListener("change", (event) => {
+      const file = event.target.files[0];
+      if(!file){
+        $("#fileName").textContent = "No photo selected.";
+        $("#preview").innerHTML = "PHOTO PREVIEW";
+        return;
+      }
+      $("#fileName").textContent = file.name;
+      const reader = new FileReader();
+      reader.onload = e => {
+        $("#preview").innerHTML = `<img src="${e.target.result}" alt="Reference preview">`;
+      };
+      reader.readAsDataURL(file);
+      setRadio("source","Use the uploaded reference photo as the identity reference and preserve recognizable facial features, skin tone, age, body proportions, and natural likeness");
+    });
+
+    updateGenderUI();
+    updateColorGenderOptions();
+    setMode("image");
+  </script>
+</body>
+</html>
